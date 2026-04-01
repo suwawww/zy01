@@ -71,7 +71,7 @@
         <p class="text-xl mb-12">系统已自动定位您的位置，正在为您呼叫社区急救中心...</p>
         
         <!-- Call Button -->
-        <button class="py-4 px-8 bg-white text-red-500 rounded-lg font-semibold hover:bg-white/90 transition-colors text-xl mb-8" onclick="window.location.href = './emergency-countdown.html'">
+        <button class="py-4 px-8 bg-white text-red-500 rounded-lg font-semibold hover:bg-white/90 transition-colors text-xl mb-8" onclick="window.location.href = 'emergency-page.html'">
             📞 立即通话
         </button>
         
@@ -93,7 +93,7 @@
             if (countdown <= 0) {
                 clearInterval(timer);
                 // Redirect to emergency page
-                window.location.href = './emergency-countdown.html';
+                window.location.href = 'emergency-page.html';
             }
         }, 1000);
         

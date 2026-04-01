@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紧急救援进行中</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            * {
+                @apply border-border;
+            }
+            body {
+                @apply bg-background text-foreground;
+            }
+        }
+        @layer components {
+            .container {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+            .card {
+                @apply bg-card rounded-xl border border-gray-200 p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px];
+            }
+            .btn {
+                @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+            }
+            .btn-primary {
+                @apply bg-primary text-white hover:bg-primary/90;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'oklch(0.9828 0.0027 247.8517)',
+                        foreground: 'oklch(0.3351 0.0027 247.8517)',
+                        card: 'oklch(1.0000 0 0)',
+                        primary: 'oklch(0.6871 0.2000 152.0219)',
+                        secondary: 'oklch(0.9500 0 0)',
+                        muted: 'oklch(0.9600 0 0)',
+                        border: 'oklch(0.9200 0 0)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b py-4 px-6 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white">
+                <span class="text-lg">🛡️</span>
+            </div>
+            <h1 class="text-xl font-semibold">紧急救援进行中</h1>
+        </div>
+        <button class="py-2 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors" onclick="showEndEmergencyModal()">
+            结束求助
+        </button>
+    </header>
+    
+    <!-- Custom Confirmation Modal -->
+    <div id="end-emergency-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl p-6 max-w-md w-full">
+            <h3 class="text-xl font-semibold mb-4">确认结束求助</h3>
+            <p class="text-gray-600 mb-6">确定要结束紧急求助吗？这将取消正在进行的救援请求。</p>
+            <div class="flex gap-4 justify-end">
+                <button class="py-2 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors" onclick="hideEndEmergencyModal()">
+                    取消
+                </button>
+                <button class="py-2 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors" onclick="endEmergency()">
+                    确定结束
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Card -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex flex-col items-center mb-6">
+                    <div class="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                        <span class="text-5xl">👤</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold mb-2">已接通</h2>
+                    <p class="text-gray-600">工作人员正在为您安排医疗资源...</p>
+                </div>
+                <div class="flex gap-4">
+                    <button class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                        <span>📞</span> 语音通话
+                    </button>
+                    <button class="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors flex items-center justify-center gap-2">
+                        <span>💬</span> 发送消息
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Card -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <!-- Map -->
+                <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-gray-500">**实时地图**</span>
+                    </div>
+                </div>
+                
+                <!-- Status -->
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            <span>🚑</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-blue-800">社区医护已出发</p>
+                            <p class="text-sm text-blue-600">预计 3 分钟后到达您的位置</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Emergency Contacts -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold">紧急联系人</h3>
+                        <a href="#" class="text-blue-600 text-sm hover:underline">通知全部</a>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-1 bg-blue-50 p-3 rounded-lg flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                <span>王</span>
+                            </div>
+                            <div>
+                                <p class="font-medium">王女士</p>
+                                <p class="text-xs text-gray-500">配偶</p>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-green-50 p-3 rounded-lg flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">
+                                <span>张</span>
+                            </div>
+                            <div>
+                                <p class="font-medium">张先生</p>
+                                <p class="text-xs text-gray-500">子女</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Show end emergency modal
+        function showEndEmergencyModal() {
+            document.getElementById('end-emergency-modal').classList.remove('hidden');
+        }
+        
+        // Hide end emergency modal
+        function hideEndEmergencyModal() {
+            document.getElementById('end-emergency-modal').classList.add('hidden');
+        }
+        
+        // End emergency function
+        function endEmergency() {
+            window.location.href = 'community-medical-service.html';
+        }
+    </script>
+</body>
+</html>
